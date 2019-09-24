@@ -10,7 +10,7 @@ const OWM_API_KEY = process.env.OWM_API_KEY,
 
 /* GET weather for 5 days. */
 router.get('/', function (req, res) {
-  axios.get(`${OWM_FORECAST_ENDPOINT}?q=${req.query.city}&appid=${OWM_API_KEY}`)
+  axios.get(`${OWM_FORECAST_ENDPOINT}?q=${req.query.city}&appid=${OWM_API_KEY}&units=metric`)
     .then(response => {
       res
         .type('json')
