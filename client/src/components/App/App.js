@@ -1,9 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import './App.css';
-import WeatherTable from '../Weather/Table/Table';
-
-const WEATHER_TIMESTAMPS_NUMBER_PER_DAY = 8;
+import WeatherOverview from '../Weather/Overview/Overview';
+import Table from '../Table/Table/Table';
 
 class App extends React.Component {
   constructor(props) {
@@ -11,38 +10,70 @@ class App extends React.Component {
 
     this.state = {
       weatherList: {},
+      currentWeather: {},
       cityInfo: {},
-      currentWeatherTab: 1
     }
   }
 
   componentDidMount() {
-    axios.get(process.env.REACT_APP_WEATHER_DOMAIN + "weather?city=Lviv")
+    axios.get(process.env.REACT_APP_WEATHER_DOMAIN + "weather?city=Lviv&count=8")
       .then(response => {
-
-        const newWeatherList = Object
-          .keys(response.data.list)
-          .filter(key =>
-            key < WEATHER_TIMESTAMPS_NUMBER_PER_DAY * this.state.currentWeatherTab &&
-            key >= WEATHER_TIMESTAMPS_NUMBER_PER_DAY * (this.state.currentWeatherTab - 1)
-          )
-          .map(key => response.data.list[key]);
-
         this.setState({
-          weatherList: newWeatherList,
+          weatherList: response.data.list,
+          currentWeather: response.data.list[0],
           cityInfo: response.data.city
         });
-        
       })
       .catch(error => {
         console.log(error);
       });
+    this.prepareWeatherForTable(this.state.weatherList);
+  }
+
+  prepareWeatherForTable(weatherList) {
+    let infoRow = {
+      time: 'Time',
+      temp: 'Temperature',
+      pressure: 'Pressure',
+      humidity: 'Humidity',
+      windSpeed: 'Wind speed'
+    }
+
+    let dataRows = Object
+      .keys(weatherList)
+      .map(key => {
+        return {
+          time: weatherList[key].dt_txt.split(" ")[1],
+          temp: weatherList[key].main.temp,
+          pressure: weatherList[key].main.pressure,
+          humidity: weatherList[key].main.humidity,
+          windSpeed: weatherList[key].wind.speed
+        }
+      });
+
+    return [infoRow, ...dataRows];
+  }
+
+  validateNestedField(obj, level, ...rest) {
+    if (obj === undefined) return null
+    if (rest.length == 0 && obj.hasOwnProperty(level)) return obj[level]
+    return this.validateNestedField(obj[level], ...rest)
   }
 
   render() {
+
+    let description = this.validateNestedField(this.state.currentWeather, 'weather', '0', 'description');
+    let weatherIconCode = this.validateNestedField(this.state.currentWeather, 'weather', '0', 'icon');
+    let temperature = this.validateNestedField(this.state.currentWeather, 'main', 'temp');
+
     return (
       <div className="App">
-        <WeatherTable weatherList={this.state.weatherList} cityInfo={this.state.cityInfo} />
+        <WeatherOverview
+          cityName={this.state.cityInfo.name}
+          description={description}
+          iconCode={weatherIconCode}
+          temperatureCelsius={temperature} />
+        <Table rows={this.prepareWeatherForTable(this.state.weatherList)} />
       </div>
     );
   }
