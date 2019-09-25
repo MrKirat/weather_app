@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import './App.css';
+import './App.scss';
 import WeatherOverview from '../Weather/Overview/Overview';
 import Table from '../Table/Table/Table';
 
@@ -33,17 +33,19 @@ class App extends React.Component {
   prepareWeatherForTable(weatherList) {
     let infoRow = {
       time: 'Time',
-      temp: 'Temperature',
-      pressure: 'Pressure',
-      humidity: 'Humidity',
-      windSpeed: 'Wind speed'
+      data: 'Data (d.m.y)',
+      temp: 'Temperature (°C)',
+      pressure: 'Pressure (mbar)',
+      humidity: 'Humidity (%)',
+      windSpeed: 'Wind speed (m/s)'
     }
 
     let dataRows = Object
       .keys(weatherList)
       .map(key => {
         return {
-          time: weatherList[key].dt_txt.split(" ")[1],
+          time: weatherList[key].dt_txt.split(' ')[1].slice(0, -3),
+          data: this.transformOwmDateFormat(weatherList[key].dt_txt.split(' ')[0]),
           temp: weatherList[key].main.temp,
           pressure: weatherList[key].main.pressure,
           humidity: weatherList[key].main.humidity,
@@ -54,9 +56,17 @@ class App extends React.Component {
     return [infoRow, ...dataRows];
   }
 
+  transformOwmDateFormat(data) {
+    let day = data.split('-')[2];
+    let month = data.split('-')[1];
+    let year = data.split('-')[0];
+
+    return day + '.' + month + '.' + year;
+  }
+
   validateNestedField(obj, level, ...rest) {
     if (obj === undefined) return null
-    if (rest.length == 0 && obj.hasOwnProperty(level)) return obj[level]
+    if (rest.length === 0 && obj.hasOwnProperty(level)) return obj[level]
     return this.validateNestedField(obj[level], ...rest)
   }
 
