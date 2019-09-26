@@ -16,7 +16,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    axios.get(process.env.REACT_APP_WEATHER_DOMAIN + "weather?city=Lviv&count=8")
+    axios.get(process.env.REACT_APP_WEATHER_DOMAIN + "api/weather?city=Lviv&count=8")
       .then(response => {
         this.setState({
           weatherList: response.data.list,
