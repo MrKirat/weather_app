@@ -6,7 +6,7 @@ var logger = require('morgan');
 var cors = require("cors");
 
 var rootRouter = require('./routes/root');
-var weatherRouter = require('./routes/weather');
+var weatherRouter = require('./routes/api/weather');
 
 var app = express();
 
