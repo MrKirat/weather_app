@@ -1,8 +1,9 @@
 import React from 'react';
 import axios from 'axios';
 import './App.scss';
-import WeatherOverview from '../Weather/Overview/Overview';
 import Table from '../Table/Table/Table';
+import Search from '../Search/Search';
+import WeatherOverview from '../Weather/Overview/Overview';
 
 class App extends React.Component {
   constructor(props) {
@@ -12,11 +13,16 @@ class App extends React.Component {
       weatherList: {},
       currentWeather: {},
       cityInfo: {},
+      searchCityName: 'Lviv',
     }
+
+    this.handleSearchChange = this.handleSearchChange.bind(this);
+    this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
+    this.updateWeather = this.updateWeather.bind(this);
   }
 
-  componentDidMount() {
-    axios.get(process.env.REACT_APP_WEATHER_DOMAIN + "api/weather?city=Lviv&count=8")
+  updateWeather() {
+    axios.get(process.env.REACT_APP_WEATHER_DOMAIN + "api/weather?city=" + this.state.searchCityName + "&count=8")
       .then(response => {
         this.setState({
           weatherList: response.data.list,
@@ -27,11 +33,14 @@ class App extends React.Component {
       .catch(error => {
         console.log(error);
       });
-    this.prepareWeatherForTable(this.state.weatherList);
+  }
+
+  componentDidMount() {
+    this.updateWeather();
   }
 
   prepareWeatherForTable(weatherList) {
-    let infoRow = {
+    let infoColumn = {
       time: 'Time',
       data: 'Data (d.m.y)',
       temp: 'Temperature (°C)',
@@ -40,7 +49,7 @@ class App extends React.Component {
       windSpeed: 'Wind speed (m/s)'
     }
 
-    let dataRows = Object
+    let dataColumns = Object
       .keys(weatherList)
       .map(key => {
         return {
@@ -53,7 +62,7 @@ class App extends React.Component {
         }
       });
 
-    return [infoRow, ...dataRows];
+    return [infoColumn, ...dataColumns];
   }
 
   transformOwmDateFormat(data) {
@@ -70,6 +79,15 @@ class App extends React.Component {
     return this.validateNestedField(obj[level], ...rest)
   }
 
+  handleSearchChange(event) {
+    this.setState({ searchCityName: event.target.value })
+  }
+
+  handleSearchSubmit(event) {
+    event.preventDefault();
+    this.updateWeather();
+  }
+
   render() {
 
     let description = this.validateNestedField(this.state.currentWeather, 'weather', '0', 'description');
@@ -78,12 +96,19 @@ class App extends React.Component {
 
     return (
       <div className="App">
+        <Search
+          onSubmit={this.handleSearchSubmit}
+          name="searchCityName"
+          value={this.state.searchCityName}
+          onChange={this.handleSearchChange} />
+
         <WeatherOverview
           cityName={this.state.cityInfo.name}
           description={description}
           iconCode={weatherIconCode}
           temperatureCelsius={temperature} />
-        <Table rows={this.prepareWeatherForTable(this.state.weatherList)} />
+
+        <Table columns={this.prepareWeatherForTable(this.state.weatherList)} />
       </div>
     );
   }

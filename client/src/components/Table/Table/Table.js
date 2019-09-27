@@ -1,15 +1,15 @@
 import React from 'react';
 import './Table.scss';
-import Row from '../Row/Row';
+import Column from '../Column/Column';
 
 const Table = props => {
 
-  let rows = props.rows.map((rowData, index) => <Row key={index} data={rowData} />);
+  let columns = props.columns.map((columnData, index) => <Column key={index} data={columnData} />);
 
   return (
     <div className="defaultWrapper">
       <div className="Table">
-        {rows}
+        {columns}
       </div>
     </div>
   );
