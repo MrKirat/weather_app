@@ -4,7 +4,9 @@
   "description": "Weather application",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "cd ./server && npm install && node ./bin/www",
+    "dev": "concurrently --kill-others --names \"Express,React\" -c \"bgBlue.bold,bgMagenta.bold\" \"cd server && npm run watch\" \"cd client && npm run start\"",
+    "prod": "cd client && npm install && npm run build && npm run start",
+    "start": "cd ./server && npm install && nom run server",
     "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "repository": {
