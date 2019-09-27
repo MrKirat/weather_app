@@ -65,7 +65,7 @@ class App extends React.Component {
       <div className="App">
 
         <div className="defaultWrapper">
-          <p className="HelpMessage">Please, specify needed city:</p>
+          <p className="HelpMessage">Please, enter city name:</p>
         </div>
 
         <Search
@@ -73,7 +73,8 @@ class App extends React.Component {
           name="searchCityName"
           value={this.state.searchCityName}
           validDataFlag={!this.state.wrongCityName}
-          onChange={this.handleSearchChange} />
+          onChange={this.handleSearchChange}
+          autoFocus="true" />
 
         <WeatherOverview
           cityName={this.state.cityInfo.name}
