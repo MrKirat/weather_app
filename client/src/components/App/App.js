@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-import { prepareWeatherForTable, validateNestedField } from '../../helpers/helpers';
+import { prepareWeatherForTable } from '../../helpers/openWeatherMap';
+import { validateNestedField } from '../../helpers/utility';
 import './App.scss';
 import Table from '../Table/Table/Table';
 import Search from '../Search/Search';

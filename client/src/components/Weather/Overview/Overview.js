@@ -1,4 +1,5 @@
 import React from 'react';
+import { getIconUrlByCode } from '../../../helpers/openWeatherMap';
 import './Overview.scss';
 
 const WeatherOverview = props => {
@@ -10,14 +11,10 @@ const WeatherOverview = props => {
       </header>
       <div className="weather-overview__footer">
         <p className="weather-overview__description">{props.description}</p>
-        <img className="weather-overview__icon" alt={props.description} src={getIconUrl(props.iconCode)} />
+        <img className="weather-overview__icon" alt={props.description} src={getIconUrlByCode(props.iconCode)} />
       </div>
     </div>
   );
-}
-
-const getIconUrl = iconcode => {
-  return "http://openweathermap.org/img/w/" + iconcode + ".png";
 }
 
 export default WeatherOverview;

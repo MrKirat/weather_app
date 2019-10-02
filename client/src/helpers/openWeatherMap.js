@@ -14,7 +14,7 @@ export const prepareWeatherForTable = weatherList => {
     .map(key => {
       return {
         time: weatherList[key].dt_txt.split(' ')[1].slice(0, -3),
-        data: transformOwmDateFormat(weatherList[key].dt_txt.split(' ')[0]),
+        data: transformDateFormat(weatherList[key].dt_txt.split(' ')[0]),
         temp: weatherList[key].main.temp,
         pressure: weatherList[key].main.pressure,
         humidity: weatherList[key].main.humidity,
@@ -25,18 +25,15 @@ export const prepareWeatherForTable = weatherList => {
   return [infoColumn, ...dataColumns];
 }
 
-const transformOwmDateFormat = (data) => {
+export const transformDateFormat = (data) => {
   let day = data.split('-')[2];
   let month = data.split('-')[1];
   let year = data.split('-')[0];
   return day + '.' + month + '.' + year;
 }
 
-//check if field exist
-export const validateNestedField = (obj, level, ...rest) => {
-  if (obj === undefined) return null
-  if (rest.length === 0 && obj.hasOwnProperty(level)) return obj[level]
-  return validateNestedField(obj[level], ...rest)
+export const getIconUrlByCode = iconCode => {
+  return "http://openweathermap.org/img/w/" + iconCode + ".png";
 }
 
-export default { prepareWeatherForTable, validateNestedField }
+export default { prepareWeatherForTable, transformDateFormat, getIconUrlByCode }
