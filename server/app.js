@@ -1,14 +1,14 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var cors = require("cors");
+let createError = require('http-errors');
+let express = require('express');
+let path = require('path');
+let cookieParser = require('cookie-parser');
+let logger = require('morgan');
+let cors = require('cors');
 
-var rootRouter = require('./routes/root');
-var weatherRouter = require('./routes/api/weather');
+let rootRouter = require('./routes/root');
+let weatherRouter = require('./routes/api/weather');
 
-var app = express();
+let app = express();
 
 app.use(cors());
 app.use(logger('dev'));

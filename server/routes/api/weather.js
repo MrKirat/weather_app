@@ -1,7 +1,7 @@
-var express = require('express');
-var axios = require('axios');
-var dotenv = require('dotenv');
-var router = express.Router();
+let express = require('express');
+let axios = require('axios');
+let dotenv = require('dotenv');
+let router = express.Router();
 
 dotenv.config();
 

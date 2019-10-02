@@ -57,9 +57,9 @@ class App extends React.Component {
 
   render() {
 
-    let description = validateNestedField(this.state.currentWeather, 'weather', '0', 'description');
-    let weatherIconCode = validateNestedField(this.state.currentWeather, 'weather', '0', 'icon');
-    let temperature = validateNestedField(this.state.currentWeather, 'main', 'temp');
+    const description = validateNestedField(this.state.currentWeather, 'weather', '0', 'description');
+    const weatherIconCode = validateNestedField(this.state.currentWeather, 'weather', '0', 'icon');
+    const temperature = validateNestedField(this.state.currentWeather, 'main', 'temp');
 
     return (
       <div className="App">

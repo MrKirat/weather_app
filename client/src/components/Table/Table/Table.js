@@ -4,7 +4,7 @@ import Column from '../Column/Column';
 
 const Table = props => {
 
-  let columns = props.columns.map((columnData, index) => <Column key={index} data={columnData} />);
+  const columns = props.columns.map((columnData, index) => <Column key={index} data={columnData} />);
 
   return (
     <div className="defaultWrapper">
