@@ -5,10 +5,10 @@ const Column = props => {
 
   const renderingData = Object
     .keys(props.data)
-    .map(key => <p className="ColumnCell" key={key}>{props.data[key]}</p>);
+    .map(key => <p className="table__cell" key={key}>{props.data[key]}</p>);
 
   return (
-    <div className="Column">
+    <div className="table__column">
       {renderingData}
     </div>
   );

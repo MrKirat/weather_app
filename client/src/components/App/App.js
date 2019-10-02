@@ -62,27 +62,35 @@ class App extends React.Component {
     const temperature = validateNestedField(this.state.currentWeather, 'main', 'temp');
 
     return (
-      <div className="App">
+      <div className="weather-app">
+        <div className="grid">
 
-        <div className="defaultWrapper">
-          <p className="HelpMessage">Please, enter city name:</p>
+          <div className="grid__item">
+            <p className="weather-app__help-msg">Please, enter city name:</p>
+          </div>
+
+          <div className="grid__item">
+            <Search
+              onSubmit={this.handleSearchSubmit}
+              name="searchCityName"
+              value={this.state.searchCityName}
+              validDataFlag={!this.state.wrongCityName}
+              onChange={this.handleSearchChange}
+              autoFocus="true" />
+          </div>
+
+          <div className="grid__item">
+            <WeatherOverview
+              cityName={this.state.cityInfo.name}
+              description={description}
+              iconCode={weatherIconCode}
+              temperatureCelsius={temperature} />
+          </div>
+
+          <div className="grid__item">
+            <Table columns={prepareWeatherForTable(this.state.weatherList)} />
+          </div>
         </div>
-
-        <Search
-          onSubmit={this.handleSearchSubmit}
-          name="searchCityName"
-          value={this.state.searchCityName}
-          validDataFlag={!this.state.wrongCityName}
-          onChange={this.handleSearchChange}
-          autoFocus="true" />
-
-        <WeatherOverview
-          cityName={this.state.cityInfo.name}
-          description={description}
-          iconCode={weatherIconCode}
-          temperatureCelsius={temperature} />
-
-        <Table columns={prepareWeatherForTable(this.state.weatherList)} />
       </div>
     );
   }

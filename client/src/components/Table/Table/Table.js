@@ -7,10 +7,8 @@ const Table = props => {
   const columns = props.columns.map((columnData, index) => <Column key={index} data={columnData} />);
 
   return (
-    <div className="defaultWrapper">
-      <div className="Table">
-        {columns}
-      </div>
+    <div className="table">
+      {columns}
     </div>
   );
 }
